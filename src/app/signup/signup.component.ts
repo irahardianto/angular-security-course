@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { response } from 'express';
 import {AuthService} from "../services/auth.service";
 
 @Component({
@@ -10,6 +11,8 @@ import {AuthService} from "../services/auth.service";
 export class SignupComponent implements OnInit {
 
     form:FormGroup;
+
+    errors:string[] = [];
 
     constructor(private fb: FormBuilder, private authService: AuthService) {
 
@@ -35,7 +38,7 @@ export class SignupComponent implements OnInit {
             this.authService.signUp(val.email, val.password)
                 .subscribe(
                     () => console.log("User created successfully"),
-                    console.error
+                    response => this.errors = response.error.errors
                 );
 
         }
